@@ -1,107 +1,41 @@
 package com.louis.controller;
 
-import com.louis.model.Product;
-import com.louis.model.ProductCategory;
-import com.louis.service.ProductService;
-import lombok.extern.slf4j.Slf4j;
+import com.louis.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
-@Slf4j
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
     private ProductService productService;
 
-    @RequestMapping("/api/product")
-    public ResponseEntity<?>  getProductCategories()
-    {
-        HttpHeaders headers = new HttpHeaders();
-        ResponseEntity<?> response;
-        try {
-            List<ProductCategory> mappedProducts = productService.listProductCategories();
-            //Map<String,List<Product>> mappedProducts = productService.getCategoryMappedProducts();
-            log.warn("Product Categories Count:::::::" + mappedProducts.size());
-            response = ResponseEntity.ok(mappedProducts);
-        }
-        catch( Exception ex)
-        {
-            log.error("Failed to retrieve product with id : {}", ex.getMessage(), ex);
-            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-        }
-        return response;
+    @GetMapping
+    public List<Product> getProducts() {
+        return productService.getAllProducts();
     }
 
-    @PutMapping("/api/product")
-    public ResponseEntity<?> add(@RequestBody Product product){
-        log.info("Input >> " + product.toString() );
-        HttpHeaders headers = new HttpHeaders();
-        ResponseEntity<?> response;
-        try {
-            Product newProduct = productService.create(product);
-            log.info("created product >> " + newProduct.toString() );
-            response = ResponseEntity.ok(newProduct);
-        }
-        catch( Exception ex)
-        {
-            log.error("Failed to retrieve product with id : {}", ex.getMessage(), ex);
-            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-        }
-        return response;
-    }
-    @PostMapping("/api/product")
-    public ResponseEntity<?> update(@RequestBody Product product){
-        log.info("Update Input >> product.toString() ");
-        HttpHeaders headers = new HttpHeaders();
-        ResponseEntity<?> response;
-        try {
-            Product newProduct = productService.update(product);
-            response = ResponseEntity.ok(product);
-        }
-        catch( Exception ex)
-        {
-            log.error("Failed to retrieve product with id : {}", ex.getMessage(), ex);
-            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-        }
-        return response;
+    @GetMapping("/{id}")
+    public Product getProduct(@PathVariable Long id) {
+        return productService.getProductById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 
-    @GetMapping("api/product/{id}")
-    public ResponseEntity<?> get(@PathVariable final Integer id){
-        log.info("Input product id >> " + Integer.toString(id));
-        HttpHeaders headers = new HttpHeaders();
-        ResponseEntity<?> response;
-        try {
-            Product product = productService.get(id);
-            response = ResponseEntity.ok(product);
-        }
-        catch( Exception ex)
-        {
-            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-        }
-        return response;
+    @PostMapping
+    public Product createProduct(@RequestBody Product product) {
+        return productService.saveProduct(product);
     }
-    @DeleteMapping("/api/product/{id}")
-    public ResponseEntity<?> delete(@PathVariable final Integer id){
-        log.info("Input >> " + Integer.toString(id));
-        HttpHeaders headers = new HttpHeaders();
-        ResponseEntity<?> response;
-        try {
-            productService.delete(id);
-            response = ResponseEntity.ok(null);
-        }
-        catch( Exception ex)
-        {
-            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
-        }
-        return response;
+
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
+        return productService.updateProduct(id, product);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
     }
 }

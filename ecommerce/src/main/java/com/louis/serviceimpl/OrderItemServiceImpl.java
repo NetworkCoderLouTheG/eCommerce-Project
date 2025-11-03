@@ -1,9 +1,6 @@
 package com.louis.serviceimpl;
-import com.louis.entity.OrderItemData;
 import com.louis.enums.OrderItemStatus;
-import com.louis.model.OrderItem;
 import com.louis.repository.OrderItemDataRepository;
-import com.louis.service.OrderItemService;
 import com.louis.util.Transform;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

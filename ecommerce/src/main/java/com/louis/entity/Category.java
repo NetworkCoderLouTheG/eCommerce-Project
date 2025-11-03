@@ -1,4 +1,4 @@
 package com.louis.entity;
 
-public class CatagoryData {
+public class Category {
 }

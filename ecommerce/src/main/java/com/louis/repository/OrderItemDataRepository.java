@@ -1,6 +1,5 @@
 package com.louis.repository;
 
-import com.louis.entity.OrderItemData;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
