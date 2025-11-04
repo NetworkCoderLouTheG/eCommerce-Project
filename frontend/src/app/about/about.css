@@ -1,0 +1,6 @@
+/* About page styling */
+.about-page { padding: 12px 0; }
+.about-logo { width: 96px; height: 96px; display:block; margin: 0 0 12px 0; }
+.about-page h2 { margin-top: 0; }
+.about-page .mission, .about-page .contact, .about-page .location, .about-page .team { margin-top: 12px; }
+.about-page .muted { color: var(--muted); }

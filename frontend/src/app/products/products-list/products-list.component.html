@@ -1,13 +1,27 @@
-<label>
-  Filter:
-  <select [(ngModel)]="selectedCategory" (change)="filterByCategory()">
-    <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
-  </select>
-</label>
-<ul>
-  <li *ngFor="let product of filteredProducts">
-    <a [routerLink]="['/product', product.id]">
-      <strong>{{product.name}}</strong> - {{ product.description }} - ${{product.price}}
-    </a>
-  </li>
-</ul>
+<div class="products-container">
+  <div class="controls">
+    <label class="filter">
+      Filter:
+      <select [(ngModel)]="selectedCategory" (change)="filterByCategory()">
+        <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="grid">
+    <article class="card" *ngFor="let product of filteredProducts">
+      <img class="thumb" [src]="product.imageUrl || 'assets/placeholder.png'" alt="{{product.name}}" />
+      <div class="card-body">
+        <h3 class="title">{{ product.name }}</h3>
+        <p class="desc">{{ product.description }}</p>
+        <div class="meta">
+          <span class="price">{{ product.price | currency:'PHP':'symbol':'1.0-0' }}</span>
+          <div class="meta-actions">
+            <button class="btn" (click)="addToCart(product)">Add to cart</button>
+            <a [routerLink]="['/product', product.id]" class="btn">View</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+/* Basic cart styles */
+.cart-table { width:100%; border-collapse: collapse; margin-bottom: 12px; }
+.cart-table th, .cart-table td { padding: 8px; border-bottom: 1px solid #eee; text-align:left; }
+.cart-footer { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.cart-footer .actions { display:flex; gap:8px; }
+.cart .price { color: var(--success); font-weight:600; }
+input[type="number"]{ width:64px; }

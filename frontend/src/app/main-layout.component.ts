@@ -9,7 +9,9 @@ import { FooterComponent } from './footer/footer.component';
   imports: [RouterOutlet, HeaderComponent, FooterComponent],
   template: `
     <app-header></app-header>
-    <main style="min-height:60vh;"><router-outlet></router-outlet></main>
+    <main class="site-main">
+      <div class="site-container"><router-outlet></router-outlet></div>
+    </main>
     <app-footer></app-footer>
   `
 })
