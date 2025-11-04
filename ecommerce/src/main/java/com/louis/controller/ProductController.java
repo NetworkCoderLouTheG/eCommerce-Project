@@ -1,39 +1,56 @@
 package com.louis.controller;
 
 import com.louis.entity.Product;
+import com.louis.entity.Category;
+import com.louis.model.ProductDTO;
 import com.louis.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.louis.repository.CategoryRepository;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 public class ProductController {
+    private final ProductService productService;
+    private final CategoryRepository categoryRepository;
 
-    @Autowired
-    private ProductService productService;
+    // Inject both via constructor
+    public ProductController(ProductService productService, CategoryRepository categoryRepository) {
+        this.productService = productService;
+        this.categoryRepository = categoryRepository;
+    }
 
     @GetMapping
-    public List<Product> getProducts() {
+    public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id) {
-        return productService.getProductById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+    public Product getProductById(@PathVariable Long id) {
+        return productService.getProductById(id);
     }
 
+    // Use DTO for product creation!
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
+    public Product saveProduct(@RequestBody ProductDTO productDTO) {
+        if (productDTO.getCategoryId() == null) {
+            throw new IllegalArgumentException("Category ID must not be null!");
+        }
+        Category category = categoryRepository.findById(productDTO.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        Product product = new Product();
+        product.setName(productDTO.getName());
+        product.setDescription(productDTO.getDescription());
+        product.setPrice(productDTO.getPrice());
+        product.setStock(productDTO.getStock());
+        product.setImageUrl(productDTO.getImageUrl());
+        product.setSpecs(productDTO.getSpecs());
+        product.setCategory(category);
+
         return productService.saveProduct(product);
     }
 
-    @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
-    }
+
 
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
