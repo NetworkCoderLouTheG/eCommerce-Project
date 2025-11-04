@@ -3,40 +3,20 @@ package com.louis.serviceimpl;
 import com.louis.entity.Product;
 import com.louis.repository.ProductRepository;
 import com.louis.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    @Autowired
-    private ProductRepository productRepository;
 
-    @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    private final ProductRepository productRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    @Override
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
-    }
-
-    @Override
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
-    }
-
-    @Override
-    public Product updateProduct(Long id, Product product) {
-        product.setId(id);
-        return productRepository.save(product);
-    }
-
-    @Override
-    public void deleteProduct(Long id) {
-        productRepository.deleteById(id);
-    }
+    public List<Product> getAllProducts() { return productRepository.findAll(); }
+    public Product getProductById(Long id) { return productRepository.findById(id).orElse(null); }
+    public Product saveProduct(Product product) { return productRepository.save(product); }
+    public void deleteProduct(Long id) { productRepository.deleteById(id); }
 }
