@@ -1,5 +1,4 @@
 package com.louis.serviceimpl;
-
 import com.louis.entity.Product;
 import com.louis.repository.ProductRepository;
 import com.louis.service.ProductService;
@@ -14,8 +13,23 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> getAllProducts() { return productRepository.findAll(); }
-    public Product getProductById(Long id) { return productRepository.findById(id).orElse(null); }
-    public Product saveProduct(Product product) { return productRepository.save(product); }
-    public void deleteProduct(Long id) { productRepository.deleteById(id); }
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
 }

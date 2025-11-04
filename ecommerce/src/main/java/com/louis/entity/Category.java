@@ -1,35 +1,18 @@
 package com.louis.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import lombok.*;
 
-import javax.persistence.*;
-import java.util.List;
-
-@Setter
-@Getter
 @Entity
-@Table(name = "categories")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
-    // Bidirectional mapping to Product
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Product> products;
-
-    // Constructors
-    public Category() {}
-
-    public Category(String name) {
-        this.name = name;
-    }
-
-    // Getters and Setters
-
 }

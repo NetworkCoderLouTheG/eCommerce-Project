@@ -6,6 +6,7 @@ import com.louis.model.ProductDTO;
 import com.louis.service.ProductService;
 import com.louis.repository.CategoryRepository;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -14,7 +15,6 @@ public class ProductController {
     private final ProductService productService;
     private final CategoryRepository categoryRepository;
 
-    // Inject both via constructor
     public ProductController(ProductService productService, CategoryRepository categoryRepository) {
         this.productService = productService;
         this.categoryRepository = categoryRepository;
@@ -30,12 +30,8 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
-    // Use DTO for product creation!
     @PostMapping
-    public Product saveProduct(@RequestBody ProductDTO productDTO) {
-        if (productDTO.getCategoryId() == null) {
-            throw new IllegalArgumentException("Category ID must not be null!");
-        }
+    public Product createProduct(@RequestBody ProductDTO productDTO) {
         Category category = categoryRepository.findById(productDTO.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
         Product product = new Product();
@@ -46,11 +42,8 @@ public class ProductController {
         product.setImageUrl(productDTO.getImageUrl());
         product.setSpecs(productDTO.getSpecs());
         product.setCategory(category);
-
         return productService.saveProduct(product);
     }
-
-
 
     @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable Long id) {
