@@ -39,6 +39,18 @@ img {
   background: #f5f5f5;
 }
 
+.img-wrap { position: relative; }
+.badge {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
 .card-body {
   padding: 10px;
   display: flex;
@@ -77,6 +89,23 @@ img {
   border-radius: 4px;
   text-decoration: none;
 }
+
+.btn.outline { background: transparent; color: #1976d2; border: 1px solid #1976d2; }
+
+.list-header { display:flex; align-items:center; gap:12px; margin:10px 0; }
+.count { color:#333; font-weight:600; }
+.no-products { padding:18px; color:#666; font-style:italic; }
+
+.spinner {
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:3px solid rgba(0,0,0,0.08);
+  border-top-color:#1976d2;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
 
 .meta-actions { display:flex; gap:8px; align-items:center; }
 

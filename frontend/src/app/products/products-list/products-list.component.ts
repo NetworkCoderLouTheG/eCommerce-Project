@@ -10,19 +10,29 @@ import { CartService } from '../../cart/cart.service';
   selector: 'app-products-list',
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
-  templateUrl: './products-list.component.html'
+  templateUrl: './products-list.component.html',
+  styleUrls: ['./products-list.component.css']
 })
 export class ProductsListComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
-  categories: string[] = ['All', 'GPU', 'CPU', 'Motherboard'];
+  categories: string[] = ['All'];
   selectedCategory = 'All';
+  loading = true;
 
-  constructor(private productService: ProductService, private cart: CartService) {}
+  constructor(public productService: ProductService, private cart: CartService) {}
 
   ngOnInit() {
     this.productService.getProducts().subscribe(data => {
       this.products = data;
+      this.loading = false;
+      // derive categories from product data
+      const cats = new Set<string>();
+      this.products.forEach(p => {
+        const name = (p as any).category?.name ?? (p as any).category ?? null;
+        if (name) cats.add(name);
+      });
+      this.categories = ['All', ...Array.from(cats)];
       this.filteredProducts = this.products;
     });
   }
@@ -41,4 +51,7 @@ export class ProductsListComponent implements OnInit {
           return catName === this.selectedCategory;
         });
   }
+
+  // image selection moved to ProductService.imageForProduct
+  // components should use productService.imageForProduct(product)
 }

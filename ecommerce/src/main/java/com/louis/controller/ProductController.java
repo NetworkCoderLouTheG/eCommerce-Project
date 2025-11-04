@@ -20,12 +20,12 @@ public class ProductController {
         this.categoryRepository = categoryRepository;
     }
 
-    @GetMapping
+    @GetMapping(produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
     public Product getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }

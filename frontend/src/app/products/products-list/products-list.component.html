@@ -8,17 +8,27 @@
     </label>
   </div>
 
+  <div class="list-header">
+    <div *ngIf="loading" class="spinner" aria-hidden="true"></div>
+    <div *ngIf="!loading" class="count">Showing {{ filteredProducts.length }} product{{ filteredProducts.length !== 1 ? 's' : '' }}</div>
+  </div>
+
+  <div *ngIf="!loading && filteredProducts.length === 0" class="no-products">No products found.</div>
+
   <div class="grid">
     <article class="card" *ngFor="let product of filteredProducts">
-      <img class="thumb" [src]="product.imageUrl || 'assets/placeholder.png'" alt="{{product.name}}" />
+      <div class="img-wrap">
+  <img class="thumb" [src]="productService.imageForProduct(product)" alt="{{product.name}}" />
+        <div class="badge">{{ product.category?.name || product.category || 'Uncategorized' }}</div>
+      </div>
       <div class="card-body">
         <h3 class="title">{{ product.name }}</h3>
-        <p class="desc">{{ product.description }}</p>
+        <p class="desc">{{ product.description || 'No description available.' }}</p>
         <div class="meta">
           <span class="price">{{ product.price | currency:'PHP':'symbol':'1.0-0' }}</span>
           <div class="meta-actions">
             <button class="btn" (click)="addToCart(product)">Add to cart</button>
-            <a [routerLink]="['/product', product.id]" class="btn">View</a>
+            <a [routerLink]="['/product', product.id]" class="btn outline">View</a>
           </div>
         </div>
       </div>

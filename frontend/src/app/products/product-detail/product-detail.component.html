@@ -1,3 +1,23 @@
-<h2>Product Details</h2>
-<div>Product ID: {{ productId }}</div>
-<!-- You will fetch and render product details by ID here, using ProductService -->
+<div *ngIf="!product">
+	<h2>Product not found</h2>
+</div>
+
+<div *ngIf="product">
+		<div class="detail-grid">
+					<div class="left">
+						<img class="detail-img" [src]="productService.imageForProduct(product)" alt="{{product.name}}" />
+					</div>
+			<div class="right">
+				<h2>{{ product.name }}</h2>
+				<p class="muted">Category: {{ product.category?.name || product.category || 'Uncategorized' }}</p>
+				<p class="desc-full">{{ product.description || 'No description available.' }}</p>
+				<p><strong>Specs:</strong> <span class="specs">{{ product.specs || 'N/A' }}</span></p>
+				<p><strong>Price:</strong> {{ product.price | currency:'PHP':'symbol':'1.0-0' }}</p>
+				<p><strong>Stock:</strong> {{ product.stock }}</p>
+				<div style="margin-top:12px;">
+					<button class="btn" (click)="addToCart()">Add to cart</button>
+					<a routerLink="/" class="btn outline" style="margin-left:8px;">Back</a>
+				</div>
+			</div>
+		</div>
+</div>
