@@ -33,5 +33,4 @@ file:
 logging: 
    level: 
       com: 
-         gabriel: 
-            pricems: TRACE
+         louis: TRACE

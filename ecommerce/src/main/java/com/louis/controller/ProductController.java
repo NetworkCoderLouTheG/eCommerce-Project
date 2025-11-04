@@ -1,6 +1,7 @@
 package com.louis.controller;
 
 import com.louis.entity.Product;
+import com.louis.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
