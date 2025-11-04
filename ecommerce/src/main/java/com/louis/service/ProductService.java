@@ -8,5 +8,4 @@ public interface ProductService {
     Product getProductById(Long id);
     Product saveProduct(Product product);
     void deleteProduct(Long id);
-    // Add category filter, search, etc. methods as needed
 }

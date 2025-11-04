@@ -1,7 +1,12 @@
 package com.louis.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "products")
 public class Product {
@@ -14,13 +19,27 @@ public class Product {
     private double price;
     private int stock;
     private String imageUrl;
-
-    // Example specs for PC parts
-    private String specs;
+    private String specs; // Example: PC part specs
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
+    // Constructors
+    public Product() {}
+
+    // (Optional) Constructor for easier instantiation in tests/seeding
+    public Product(String name, String description, double price, int stock,
+                   String imageUrl, String specs, Category category) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+        this.imageUrl = imageUrl;
+        this.specs = specs;
+        this.category = category;
+    }
+
     // Getters and Setters
+
 }
