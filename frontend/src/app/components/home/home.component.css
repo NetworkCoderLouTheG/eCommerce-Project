@@ -1,6 +1,8 @@
+/* Home component styles - polished theme using CSS variables */
 .home-container {
   min-height: calc(100vh - 80px);
 }
+
 
 /* Hero Section */
 .hero {

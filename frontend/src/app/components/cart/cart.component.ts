@@ -1,68 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
-import { CartItem } from '../../models/cart.model';
+import { Product } from '../../models/product.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit {
-  cartItems: CartItem[] = [];
-  total = 0;
-
-  constructor(
-    private cartService: CartService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.loadCart();
+export class CartComponent {
+  get items() {
+    return this.cartService.getItems();
   }
 
-  loadCart() {
-    this.cartService.cartItems$.subscribe(items => {
-      this.cartItems = items;
-      this.calculateTotal();
-    });
-  }
+  constructor(public cartService: CartService) {}
 
-  calculateTotal() {
-    this.total = this.cartService.getCartTotal();
-  }
-
-  updateQuantity(item: CartItem, change: number) {
-    const newQuantity = item.quantity + change;
-    if (newQuantity > 0 && item.product.id) {
-      this.cartService.updateQuantity(item.product.id, newQuantity);
+  updateQty(item: { product: Product; quantity: number }, event: Event) {
+    const input = event.target as HTMLInputElement;
+    let newQty = Number(input.value);
+    if (Number.isNaN(newQty) || newQty < 1) newQty = 1;
+    if (newQty > item.product.stockQuantity) newQty = item.product.stockQuantity;
+    item.quantity = newQty;
+    // persist the change via service
+    if (item.product.id) {
+      this.cartService.updateQuantity(item.product.id, item.quantity);
     }
   }
 
-  removeItem(item: CartItem) {
-    if (confirm(`Remove ${item.product.name} from cart?`)) {
-      if (item.product.id) {
-        this.cartService.removeFromCart(item.product.id);
-      }
-    }
+  remove(productId?: number) {
+    if (productId === undefined || productId === null) return;
+    this.cartService.removeFromCart(productId);
   }
 
-  clearCart() {
-    if (confirm('Clear entire cart?')) {
-      this.cartService.clearCart();
-    }
-  }
-
-  checkout() {
-    if (this.cartItems.length > 0) {
-      alert('Checkout functionality coming soon! Your order total is $' + this.total.toFixed(2));
-    }
-  }
-
-  continueShopping() {
-    this.router.navigate(['/products']);
+  get total(): number {
+    return this.items.reduce(
+      (sum: number, item: { product: Product; quantity: number }) => sum + item.product.price * item.quantity,
+      0
+    );
   }
 }
