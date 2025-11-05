@@ -8,11 +8,12 @@ export class CartService {
   addToCart(product: Product, qty: number = 1) {
     const existing = this.items.find(i => i.product.id === product.id);
     if (existing) {
-      if(existing.quantity + qty <= product.stockQuantity){
-        existing.quantity += qty;
-      }
+      const potentialQty = existing.quantity + qty;
+      existing.quantity = Math.min(potentialQty, product.stockQuantity);
     } else {
-      this.items.push({ product, quantity: qty });
+      if (qty <= product.stockQuantity) {
+        this.items.push({ product, quantity: qty });
+      }
     }
   }
 

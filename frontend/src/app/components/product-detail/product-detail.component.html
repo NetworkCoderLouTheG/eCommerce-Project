@@ -1,12 +1,9 @@
-<div class="product-details">
-  <img [src]="product?.imageUrl" [alt]="product?.name" class="product-detail-img" />
-  <div>
-    <h2>{{ product?.name }}</h2>
-    <p *ngIf="product?.brand">by {{ product?.brand }}</p>
-    <div class="price">\${{ product?.price }}</div>
-    <div class="quantity">
-      <span>Stock:</span> {{ product?.stockQuantity }}</div>
-    <div>{{ product?.description }}</div>
-    <!-- Add to Cart/Details as desired -->
+<div class="detail-center-container" *ngIf="product">
+  <div class="detail-card">
+    <img [src]="product.imageUrl" [alt]="product.name" class="detail-image"/>
+    <h2>{{ product.name }}</h2>
+    <div class="price">\${{ product.price }}</div>
+    <div class="quantity">Stock: {{ product.stockQuantity }}</div>
+    <div class="desc">{{ product.description }}</div>
   </div>
 </div>

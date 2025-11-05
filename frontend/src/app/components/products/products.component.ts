@@ -18,6 +18,10 @@ export class ProductsComponent implements OnInit {
   categoryId: number | null = null;
   desiredQty: { [productId: number]: number } = {};
 
+  get isGrid() {
+    return !this.categoryId;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
@@ -44,6 +48,9 @@ export class ProductsComponent implements OnInit {
   }
 
   addToCart(product: Product) {
-    this.cartService.addToCart(product, this.desiredQty[product.id!] || 1);
+    const qty = this.desiredQty[product.id!] || 1;
+    if (qty < 1) return;
+    if (qty > product.stockQuantity) return;
+    this.cartService.addToCart(product, qty);
   }
 }
