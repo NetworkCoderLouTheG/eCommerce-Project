@@ -1,0 +1,47 @@
+<div class="home-container">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Build Your Dream PC</h1>
+      <p>Premium components for enthusiasts and professionals</p>
+      <a routerLink="/products" class="btn btn-primary">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="categories-section">
+    <h2>Shop by Category</h2>
+    <div class="categories-grid">
+      @for (category of categories; track category.id) {
+        <a [routerLink]="['/products']" [queryParams]="{category: category.id}" class="category-card">
+          <div class="category-icon">
+            <i class="fas fa-microchip"></i>
+          </div>
+          <h3>{{ category.name }}</h3>
+          <p>{{ category.description }}</p>
+        </a>
+      }
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="featured-section">
+    <h2>Featured Products</h2>
+    <div class="products-grid">
+      @for (product of featuredProducts; track product.id) {
+        <div class="product-card">
+          <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+          <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="product-brand">{{ product.brand }}</p>
+            <p class="product-price">${{ product.price }}</p>
+            <a [routerLink]="['/products', product.id]" class="btn btn-secondary">View Details</a>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="view-all">
+      <a routerLink="/products" class="btn btn-outline">View All Products</a>
+    </div>
+  </section>
+</div>
