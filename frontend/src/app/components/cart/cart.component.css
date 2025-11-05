@@ -23,29 +23,14 @@
 .cart-table img {
   border-radius: 4px;
 }
-.btn-remove {
-  background: var(--danger);
+button {
+  background: #e53e3e;
   color: #fff;
   border: none;
-  padding: 0.45rem 0.75rem;
-  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 4px;
   cursor: pointer;
 }
-.btn-remove:hover { background: #c53030; }
-
-.cart-actions {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: flex-end;
-  margin-top: 1rem;
+button:hover {
+  background: #c53030;
 }
-
-.checkout-btn {
-  background: var(--primary);
-  color: white;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-.checkout-btn:hover { background: var(--primary-dark); }

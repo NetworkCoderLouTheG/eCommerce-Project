@@ -8,9 +8,12 @@
       <p>Quantity available: {{ product.stockQuantity }}</p>
       <label>
         Qty
-        <input type="number" min="1" [max]="product.stockQuantity" [(ngModel)]="product.quantity" />
+        <input type="number"
+               min="1"
+               [max]="product.stockQuantity"
+               [(ngModel)]="desiredQty[product.id!]" />
       </label>
-      <button class="btn btn-primary" (click)="addToCart(product, product.quantity || 1)" [disabled]="product.stockQuantity === 0 || (product.quantity && product.quantity > product.stockQuantity)">Add to Cart</button>
+      <button (click)="addToCart(product)" [disabled]="product.stockQuantity === 0">Add to Cart</button>
       <a [routerLink]="['/products', product.id]" class="btn btn-secondary">View Details</a>
     </div>
   </div>

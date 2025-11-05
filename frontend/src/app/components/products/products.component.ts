@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 export class ProductsComponent implements OnInit {
   products: Product[] = [];
   categoryId: number | null = null;
+  desiredQty: { [productId: number]: number } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -27,47 +28,22 @@ export class ProductsComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => {
       const cat = params.get('category');
       this.categoryId = cat ? +cat : null;
+      const qtyDefault = 1;
+      const setDesiredQty = (products: Product[]) => {
+        this.products = products;
+        products.forEach(product => this.desiredQty[product.id!] = qtyDefault);
+      };
       if (this.categoryId) {
         this.productService.getProductsByCategory(this.categoryId)
-          .subscribe(products => this.initProducts(products));
+          .subscribe(setDesiredQty);
       } else {
         this.productService.getAllProducts()
-          .subscribe(products => this.initProducts(products));
+          .subscribe(setDesiredQty);
       }
     });
   }
 
-  private initProducts(products: Product[]) {
-    this.products = products.map(p => {
-      if (p.quantity === undefined || p.quantity === null) {
-        p.quantity = 1;
-      }
-      if (p.stockQuantity === undefined || p.stockQuantity === null) {
-        p.stockQuantity = 0;
-      }
-      if (p.stockQuantity <= 0) {
-        p.stockQuantity = 10;
-        (p as any)._demoRestocked = true;
-      }
-      return p;
-    });
-  }
-
-  addToCart(product: Product, qty?: number) {
-    const desired = qty && qty > 0 ? qty : (product.quantity && product.quantity > 0 ? product.quantity : 1);
-
-    if (product.stockQuantity <= 0) {
-      return;
-    }
-
-    const addQty = Math.min(desired, product.stockQuantity);
-
-    product.stockQuantity = product.stockQuantity - addQty;
-
-    this.cartService.addToCart(product, addQty);
-  }
-
-  isDemo(product: Product): boolean {
-    return !!(product as any)._demoRestocked;
+  addToCart(product: Product) {
+    this.cartService.addToCart(product, this.desiredQty[product.id!] || 1);
   }
 }
