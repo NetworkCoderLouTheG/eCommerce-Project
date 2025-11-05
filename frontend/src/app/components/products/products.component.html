@@ -1,5 +1,28 @@
-<div>
-  <h2>Products</h2>
-  <p *ngIf="categoryId">Currently filtered by category: {{ categoryId }}</p>
-  <!-- Product listing goes here -->
+<div class="products-grid">
+  <div class="product-card" *ngFor="let product of products">
+    <img [src]="product.imageUrl" [alt]="product.name" class="product-image" />
+    <div class="product-body">
+      <h3>{{ product.name }}</h3>
+      <p class="truncate">{{ product.description }}</p>
+      <p class="price">\${{ product.price }}</p>
+
+      <p *ngIf="product.stockQuantity > 0">
+        Quantity available: {{ product.stockQuantity }}
+        <span *ngIf="isDemo(product)" class="demo-note">(demo)</span>
+      </p>
+      <p *ngIf="product.stockQuantity === 0" class="out-of-stock">Out of Stock</p>
+
+      <div class="actions">
+        <label>
+          Qty
+          <input type="number" min="1" [max]="product.stockQuantity" [(ngModel)]="product.quantity" />
+        </label>
+        <button (click)="addToCart(product)" [disabled]="product.stockQuantity === 0 || (product.quantity && product.quantity > product.stockQuantity)">Add to Cart</button>
+      </div>
+
+      <div class="details-link">
+        <a [routerLink]="['/products', product.id]" class="btn btn-secondary">View Details</a>
+      </div>
+    </div>
+  </div>
 </div>
