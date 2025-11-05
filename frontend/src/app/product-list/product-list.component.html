@@ -1,0 +1,19 @@
+<div style="max-width: 800px; margin: 40px auto;">
+  <h2>Product List</h2>
+  <table *ngIf="products.length" border="1" cellpadding="10" style="width:100%;">
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Price ($)</th><th>Stock</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of products">
+        <td>{{ p.id }}</td>
+        <td>{{ p.name }}</td>
+        <td>{{ p.price }}</td>
+        <td>{{ p.stock }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!products.length">No products found.</div>
+</div>
